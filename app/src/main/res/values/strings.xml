@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Photohunt</string>
+    <string name="action_settings">Settings</string>
+    <string name="email" translatable="false">E-mail</string>
+    <string name="password">Password</string>
+    <string name="login">LOGIN</string>
+    <string name="forgotpass">Forgot password</string>
+    <string name="noacc">No account? Register here!</string>
+    <string name="register">REGISTER</string>
+    <string name="alreadyacc">Already registered? Login here!</string>
+    <string name="changepass">Change password</string>
+    <string name="logout">LOGOUT</string>
+    <string name="welcome">Welcome:</string>
+    <string name="code" translatable="false">Code</string>
+    <string name="oldpass">Old password</string>
+    <string name="newpass">New password</string>
+    <string name="fillfields">Please fill in all the required fields!</string>
+    <string name="cancel">Cancel</string>
+    <string name="remainingtime">Time remaining:</string>
+    <string name="timeout">Time\'s up! Please request another code to change your password</string>
+    <string name="checkemail">Code sent to given e-mail adress</string>
+    <string name="userexist">User with this email already exists</string>
+    <string name="userregist">User succesfully registered</string>
+    <string name="regfail">Registration failed</string>
+    <string name="invalid">Invalid parameters</string>
+    <string name="noemail">Email doesn\'t exist</string>
+    <string name="succespass">Password succesfully updated!</string>
+    <string name="errorpass">Error updating your password</string>
+    <string name="invalidlogin">Invalid login credentials</string>
+    <string name="naam">Name</string>
+    <string name="noconnection">No internet connection!</string>
+</resources>

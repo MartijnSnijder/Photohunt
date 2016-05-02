@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Photohunt</string>
+    <string name="action_settings">Instellingen</string>
+    <string name="password">Wachtwoord</string>
+    <string name="login">INLOGGEN</string>
+    <string name="forgotpass">Wachtwoord vergeten</string>
+    <string name="noacc">Geen account? Registreer hier!</string>
+    <string name="register">REGISTREER</string>
+    <string name="alreadyacc">Al een account? Log hier in!</string>
+    <string name="changepass">Verander wachtwoord</string>
+    <string name="logout">UITLOGGEN</string>
+    <string name="welcome">Welkom:</string>
+    <string name="newpass">Nieuw wachtwoord</string>
+    <string name="oldpass">Oud wachtwoord</string>
+    <string name="fillfields">Vul alstublieft alle lege velden in!</string>
+    <string name="cancel">Annuleren</string>
+    <string name="remainingtime">Resterende tijd:</string>
+    <string name="timeout">De tijd is op! Vraag alstublieft een nieuwe code aan om uw wachtwoord te veranderen</string>
+    <string name="checkemail">Code verstuurd naar opgegeven e-mailadres</string>
+    <string name="userexist">Er is al een gebruiker met dit emailadres</string>
+    <string name="userregist">Gebruiker succesvol geregistreerd</string>
+    <string name="regfail">Registratie mislukt</string>
+    <string name="invalid">Ongeldige invoer</string>
+    <string name="noemail">Emailadres is niet bekend</string>
+    <string name="errorpass">Error bij het veranderen van wachtwoord</string>
+    <string name="succespass">Wachtwoord succesvol veranderd!</string>
+    <string name="invalidlogin">Email of wachtwoord is niet correct</string>
+    <string name="naam">Naam</string>
+    <string name="noconnection">Geen internet connectie!</string>
+</resources>
