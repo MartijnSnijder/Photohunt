@@ -20,6 +20,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.facebook.login.LoginManager;
+import com.facebook.login.widget.ProfilePictureView;
+
 import snijder.martijn.photohunt.models.ServerRequest;
 import snijder.martijn.photohunt.models.ServerResponse;
 import snijder.martijn.photohunt.models.User;
@@ -37,11 +40,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private AlertDialog dialog;
     private ProgressBar progress;
     private DrawerLayout mDrawer;
+    private ProfilePictureView profile;
+    User user;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.navigation_view);
+        View header = navigationView.getHeaderView(0);
+        profile = (ProfilePictureView)header.findViewById(R.id.picture);
         mDrawer = (DrawerLayout) this.getActivity().findViewById(R.id.drawer);
         mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         View view = inflater.inflate(R.layout.fragment_profile,container,false);
@@ -132,11 +140,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private void logout() {
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(Constants.IS_LOGGED_IN,false);
-        editor.putString(Constants.EMAIL,"");
+        editor.putBoolean(Constants.IS_LOGGED_IN, false);
+        editor.putString(Constants.EMAIL, "");
         editor.putString(Constants.NAME,"");
         editor.putString(Constants.UNIQUE_ID,"");
+        editor.putString(Constants.FACEBOOK_ID, "");
         editor.apply();
+        profile.setProfileId("0");
+        tv_namedrawer.setText("");
+        tv_emaildrawer.setText("");
+        LoginManager.getInstance().logOut();
         goToLogin();
     }
 

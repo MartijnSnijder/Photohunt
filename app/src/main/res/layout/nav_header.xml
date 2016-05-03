@@ -23,7 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="Team Photohunt"
         android:textColorHint="@color/white" />
 
     <TextView
@@ -33,6 +32,5 @@
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="no-reply@photohunt.com"
         android:textColorHint="@color/white" />
 </LinearLayout>

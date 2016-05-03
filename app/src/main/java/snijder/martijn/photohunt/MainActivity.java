@@ -1,7 +1,6 @@
 package snijder.martijn.photohunt;
 
 import android.Manifest;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
@@ -25,10 +24,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.widget.ProfilePictureView;
 
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 import de.halfbit.tinybus.wires.ConnectivityWire;
+import snijder.martijn.photohunt.models.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,11 +40,13 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 1;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
-    private LoginFragment logfrag;
-
+    private ProfilePictureView profile;
+    private TextView name, email;
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         checkPermission();
         initFragment();
+        setDrawerItems();
 
         // Thirdparty library voor internetcheck
         mBus = TinyBus.from(this);
@@ -65,29 +70,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 int id = menuItem.getItemId();
-                Fragment fragment;
 
                 switch (id) {
                     case R.id.home:
                         drawerLayout.closeDrawers();
-                        Fragment login = new ProfileFragment();
+                        Fragment profile = new ProfileFragment();
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.fragment_frame, login);
+                        ft.replace(R.id.fragment_frame, profile);
                         ft.commit();
                     case R.id.settings:
                         drawerLayout.closeDrawers();
-                        Fragment profile = new ProfileFragment();
+                        profile = new ProfileFragment();
                         ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.fragment_frame, profile);
                         ft.commit();
                     case R.id.logout:
                         drawerLayout.closeDrawers();
-                        SharedPreferences.Editor editor = pref.edit();
-                        editor.putBoolean(Constants.IS_LOGGED_IN, false);
-                        editor.putString(Constants.EMAIL, "");
-                        editor.putString(Constants.NAME, "");
-                        editor.putString(Constants.UNIQUE_ID, "");
-                        editor.apply();
+
+                        Fragment login = new LoginFragment();
+                        ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.fragment_frame, login);
+                        ft.commit();
+                        logout();
                 }
                 return true;
             }
@@ -154,6 +158,21 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
     }
 
+    public void setDrawerItems() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        View header = navigationView.getHeaderView(0);
+        profile = (ProfilePictureView)header.findViewById(R.id.picture);
+        name = (TextView)header.findViewById(R.id.tv_namedrawer);
+        email = (TextView)header.findViewById(R.id.tv_emaildrawer);
+        try {
+            profile.setProfileId(pref.getString(Constants.FACEBOOK_ID, ""));
+            name.setText(pref.getString(Constants.NAME, ""));
+            email.setText(pref.getString(Constants.EMAIL, ""));
+        }
+        catch (Exception e)
+        {}
+    }
+
     @Subscribe
     public void onConnectivityEvent(ConnectivityWire.ConnectionStateEvent event) {
         Snackbar snackbar = Snackbar
@@ -185,5 +204,19 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_frame, fragment);
         ft.commit();
+    }
+
+    protected void logout() {
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(Constants.IS_LOGGED_IN, false);
+        editor.putString(Constants.EMAIL, "");
+        editor.putString(Constants.NAME, "");
+        editor.putString(Constants.UNIQUE_ID, "");
+        editor.putString(Constants.FACEBOOK_ID, "");
+        editor.apply();
+        profile.setProfileId("0");
+        name.setText("");
+        email.setText("");
+        LoginManager.getInstance().logOut();
     }
 }

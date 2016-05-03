@@ -37,6 +37,7 @@ import com.facebook.login.widget.ProfilePictureView;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import snijder.martijn.photohunt.models.ServerRequest;
@@ -66,7 +67,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
-            Profile profile = Profile.getCurrentProfile();
+            Profile userprofile = Profile.getCurrentProfile();
             GraphRequest request = GraphRequest.newMeRequest(
                     loginResult.getAccessToken(),
                     new GraphRequest.GraphJSONObjectCallback() {
@@ -81,16 +82,33 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                                 user.setFacebookID(object.getString("id").toString());
                                 user.setEmail(object.getString("email").toString());
                                 user.setName(object.getString("name").toString());
+                                profile.setProfileId(user.getFacebookID());
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.putBoolean(Constants.IS_LOGGED_IN, true);
+                                editor.putString(Constants.EMAIL, user.getEmail());
+                                editor.putString(Constants.NAME, user.getName());
+                                editor.putString(Constants.UNIQUE_ID, user.getUnique_id());
+                                editor.putString(Constants.FACEBOOK_ID, user.getFacebookID());
+                                editor.apply();
+
+                                NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.navigation_view);
+                                View header = navigationView.getHeaderView(0);
+                                TextView tv_namedrawer = (TextView) header.findViewById(R.id.tv_namedrawer);
+                                tv_namedrawer.setText(pref.getString(Constants.NAME, ""));
+                                TextView tv_emaildrawer = (TextView) header.findViewById(R.id.tv_emaildrawer);
+                                tv_emaildrawer.setText(pref.getString(Constants.EMAIL, ""));
+
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
-                            Toast.makeText(getActivity(),getString(R.string.loggedin) + " " + user.getName(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getString(R.string.loggedin) + " " + user.getName(),Toast.LENGTH_SHORT).show();
+                            goToProfile();
                         }
 
                     });
 
             Bundle parameters = new Bundle();
-            parameters.putString("fields", "id,name,email,gender, birthday");
+            parameters.putString("fields", "id,name,email,gender");
             request.setParameters(parameters);
             request.executeAsync();
         }
@@ -116,7 +134,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         mtracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-
                 Log.v("AccessTokenTracker", "oldAccessToken=" + oldAccessToken + "||" + "CurrentAccessToken" + currentAccessToken);
             }
         };
@@ -136,7 +153,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login,container,false);
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
         initViews(view);
         return view;
     }
@@ -169,6 +186,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         progress = (ProgressBar)view.findViewById(R.id.progress);
 
         login = (LoginButton) view.findViewById(R.id.login_button);
+        login.setReadPermissions("public_profile", "email", "user_friends");
         login.setOnClickListener(this);
         login.setFragment(this);
         login.registerCallback(callbackManager, callback);
