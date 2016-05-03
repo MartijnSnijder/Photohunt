@@ -1,13 +1,13 @@
 package snijder.martijn.photohunt;
 
 import android.Manifest;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
 import android.provider.Settings;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -24,6 +24,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
+
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
 import de.halfbit.tinybus.wires.ConnectivityWire;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 1;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
+    private LoginFragment logfrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,37 +64,30 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-
                 int id = menuItem.getItemId();
+                Fragment fragment;
+
                 switch (id) {
                     case R.id.home:
                         drawerLayout.closeDrawers();
-                        Fragment login = new LoginFragment();
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        Fragment login = new ProfileFragment();
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.fragment_frame, login);
                         ft.commit();
-                        break;
                     case R.id.settings:
                         drawerLayout.closeDrawers();
                         Fragment profile = new ProfileFragment();
-                        ft = getFragmentManager().beginTransaction();
+                        ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.fragment_frame, profile);
                         ft.commit();
-                        break;
                     case R.id.logout:
                         drawerLayout.closeDrawers();
-
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putBoolean(Constants.IS_LOGGED_IN, false);
                         editor.putString(Constants.EMAIL, "");
                         editor.putString(Constants.NAME, "");
                         editor.putString(Constants.UNIQUE_ID, "");
                         editor.apply();
-
-                        login = new LoginFragment();
-                        ft = getFragmentManager().beginTransaction();
-                        ft.replace(R.id.fragment_frame, login);
-                        ft.commit();
                 }
                 return true;
             }
@@ -186,9 +182,8 @@ public class MainActivity extends AppCompatActivity {
         }else {
             fragment = new LoginFragment();
         }
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_frame,fragment);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_frame, fragment);
         ft.commit();
     }
-
 }

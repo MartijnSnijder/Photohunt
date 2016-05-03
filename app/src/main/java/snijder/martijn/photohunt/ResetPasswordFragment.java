@@ -3,8 +3,9 @@ package snijder.martijn.photohunt;
 /**
  * Created by SnijderMMartijn on 2-5-2016.
  */
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;

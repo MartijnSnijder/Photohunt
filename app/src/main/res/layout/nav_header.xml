@@ -8,12 +8,12 @@
     android:layout_width="match_parent"
     android:layout_height="190dp">
 
-    <ImageView
-        android:src="@drawable/ic_person"
-        android:layout_width="wrap_content"
+    <com.facebook.login.widget.ProfilePictureView
+        android:id="@+id/picture"
         android:layout_gravity="center"
-        android:layout_weight="1"
-        android:layout_height="0dp" />
+        android:layout_marginTop="20dp"
+        android:layout_width="70sp"
+        android:layout_height="70sp"/>
 
     <TextView
         android:id="@+id/tv_namedrawer"
@@ -21,7 +21,10 @@
         android:textSize="18sp"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Team Photohunt"
+        android:textColorHint="@color/white" />
 
     <TextView
         android:id="@+id/tv_emaildrawer"
@@ -29,5 +32,7 @@
         android:textSize="14sp"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:hint="no-reply@photohunt.com"
+        android:textColorHint="@color/white" />
 </LinearLayout>

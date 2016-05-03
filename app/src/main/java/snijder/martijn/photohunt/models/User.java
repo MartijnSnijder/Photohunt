@@ -5,6 +5,7 @@ public class User {
 
     private String name;
     private String email;
+    private String facebookID;
     private String unique_id;
     private String password;
     private String old_password;
@@ -12,22 +13,15 @@ public class User {
     private String code;
 
 
-    public String getName() {
-        return name;
-    }
+    public String getName() {return name;}
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() { return email;}
 
-    public String getUnique_id() {
-        return unique_id;
-    }
+    public String getUnique_id() {return unique_id; }
 
+    public String getFacebookID() {return facebookID; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name;}
 
     public void setEmail(String email) {
         this.email = email;
@@ -48,5 +42,7 @@ public class User {
     public void setCode(String code) {
         this.code = code;
     }
+
+    public void setFacebookID(String facebookID) { this.facebookID = facebookID; }
 
 }

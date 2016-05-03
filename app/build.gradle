@@ -28,4 +28,5 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.0'
     compile 'de.halfbit:tinybus:3.0.2'
     compile 'de.halfbit:tinybus-extensions:3.0.2'
+    compile 'com.facebook.android:facebook-android-sdk:4.1.0'
 }
