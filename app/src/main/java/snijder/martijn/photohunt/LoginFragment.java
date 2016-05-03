@@ -5,6 +5,8 @@ import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,12 +33,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private TextView tv_register,tv_reset_password;
     private ProgressBar progress;
     private SharedPreferences pref;
+    private DrawerLayout mDrawer;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_login,container,false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        mDrawer = (DrawerLayout) this.getActivity().findViewById(R.id.drawer);
+        mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         initViews(view);
         return view;
     }
@@ -86,6 +91,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                 break;
         }
     }
+
     private void loginProcess(String email,String password){
 
         Retrofit retrofit = new Retrofit.Builder()

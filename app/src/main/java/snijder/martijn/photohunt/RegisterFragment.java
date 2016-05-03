@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,11 +30,14 @@ public class RegisterFragment extends Fragment  implements View.OnClickListener{
     private EditText et_email,et_password,et_name;
     private TextView tv_login;
     private ProgressBar progress;
+    private DrawerLayout mDrawer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_register,container,false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        mDrawer = (DrawerLayout) this.getActivity().findViewById(R.id.drawer);
+        mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         initViews(view);
         return view;
     }
@@ -135,7 +140,7 @@ public class RegisterFragment extends Fragment  implements View.OnClickListener{
         });
     }
 
-    private void goToLogin(){
+    protected void goToLogin(){
 
         Fragment login = new LoginFragment();
         FragmentTransaction ft = getFragmentManager().beginTransaction();

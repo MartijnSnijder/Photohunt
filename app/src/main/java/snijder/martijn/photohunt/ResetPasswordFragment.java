@@ -9,6 +9,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,12 +41,15 @@ public class ResetPasswordFragment extends Fragment implements View.OnClickListe
     private String email;
     private CountDownTimer countDownTimer;
     private InputMethodManager imm;
+    private DrawerLayout mDrawer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_password_reset,container,false);
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        mDrawer = (DrawerLayout) this.getActivity().findViewById(R.id.drawer);
+        mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         initViews(view);
         return view;
     }

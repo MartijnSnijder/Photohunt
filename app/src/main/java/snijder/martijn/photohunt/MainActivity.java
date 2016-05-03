@@ -10,11 +10,16 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.provider.Settings;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,11 +34,16 @@ public class MainActivity extends AppCompatActivity {
     private TinyBus mBus;
     private CoordinatorLayout coordinatorLayout;
     private static final int PERMISSION_REQUEST_CODE = 1;
+    private DrawerLayout drawerLayout;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        initNavigationDrawer();
         pref = getPreferences(0);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         checkPermission();
@@ -44,6 +54,63 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             mBus.wire(new ConnectivityWire(ConnectivityWire.ConnectionStateEvent.class));
         }
+    }
+
+    public void initNavigationDrawer() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                int id = menuItem.getItemId();
+                switch (id) {
+                    case R.id.home:
+                        drawerLayout.closeDrawers();
+                        Fragment login = new LoginFragment();
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.fragment_frame, login);
+                        ft.commit();
+                        break;
+                    case R.id.settings:
+                        drawerLayout.closeDrawers();
+                        Fragment profile = new ProfileFragment();
+                        ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.fragment_frame, profile);
+                        ft.commit();
+                        break;
+                    case R.id.logout:
+                        drawerLayout.closeDrawers();
+
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putBoolean(Constants.IS_LOGGED_IN, false);
+                        editor.putString(Constants.EMAIL, "");
+                        editor.putString(Constants.NAME, "");
+                        editor.putString(Constants.UNIQUE_ID, "");
+                        editor.apply();
+
+                        login = new LoginFragment();
+                        ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.fragment_frame, login);
+                        ft.commit();
+                }
+                return true;
+            }
+        });
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.changepass,R.string.storagepermission){
+
+            @Override
+            public void onDrawerClosed(View v){
+                super.onDrawerClosed(v);
+            }
+
+            @Override
+            public void onDrawerOpened(View v) {
+                super.onDrawerOpened(v);
+            }
+        };
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
     }
 
     private boolean checkPermission(){
@@ -60,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)){
 
-            Toast.makeText(this,"GPS permission allows us to access location data. Please allow in App Settings for additional functionality.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this,R.string.storagepermission, Toast.LENGTH_LONG).show();
 
         } else {
 
@@ -111,8 +178,6 @@ public class MainActivity extends AppCompatActivity {
             snackbar.dismiss();
         }
     }
-
-
 
     private void initFragment(){
         Fragment fragment;

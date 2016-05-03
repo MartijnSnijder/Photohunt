@@ -6,7 +6,10 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,18 +29,20 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
-
-    private TextView tv_name,tv_email,tv_message;
+    private TextView tv_name,tv_email,tv_message, tv_namedrawer, tv_emaildrawer;
     private SharedPreferences pref;
     private AppCompatButton btn_change_password,btn_logout;
     private EditText et_old_password,et_new_password;
     private AlertDialog dialog;
     private ProgressBar progress;
+    private DrawerLayout mDrawer;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        mDrawer = (DrawerLayout) this.getActivity().findViewById(R.id.drawer);
+        mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         View view = inflater.inflate(R.layout.fragment_profile,container,false);
         initViews(view);
         return view;
@@ -45,11 +50,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
         pref = getActivity().getPreferences(0);
+        NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.navigation_view);
+        View header = navigationView.getHeaderView(0);
+        tv_namedrawer = (TextView) header.findViewById(R.id.tv_namedrawer);
+        tv_namedrawer.setText(pref.getString(Constants.NAME, ""));
+        tv_emaildrawer = (TextView) header.findViewById(R.id.tv_emaildrawer);
+        tv_emaildrawer.setText(pref.getString(Constants.EMAIL, ""));
         tv_name.setText(pref.getString(Constants.NAME,""));
         tv_email.setText(pref.getString(Constants.EMAIL,""));
-
     }
 
     private void initViews(View view){

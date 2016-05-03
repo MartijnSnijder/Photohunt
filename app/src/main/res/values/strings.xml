@@ -29,4 +29,6 @@
     <string name="invalidlogin">Invalid login credentials</string>
     <string name="naam">Name</string>
     <string name="noconnection">No internet connection!</string>
+    <string name="storagepermission">This app needs to access the storage to save images and work properly. Please give this access in the App settings.</string>
+    <string name="logout2">Logout</string>
 </resources>
