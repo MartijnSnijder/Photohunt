@@ -33,4 +33,5 @@
     <string name="logout2">Logout</string>
     <string name="facebook_app_id" translatable="false">496981760499570</string>
     <string name="or">Or</string>
+    <string name="loggedin">Logged in as:</string>
 </resources>

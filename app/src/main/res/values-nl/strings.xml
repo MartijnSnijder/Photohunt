@@ -31,4 +31,5 @@
     <string name="storagepermission">Deze app heeft toegang tot het geheugen nodig om afbeeldingen op te slaan en correct te kunnen werken. Geef deze toegang alstublieft in de Apps instellingen.</string>
     <string name="logout2">Uitloggen</string>
     <string name="or">Of</string>
+    <string name="loggedin">Ingelogd als:</string>
 </resources>

@@ -26,12 +26,16 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.widget.ProfilePictureView;
+
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -57,11 +61,38 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private CallbackManager callbackManager = null;
     private AccessTokenTracker mtracker = null;
     private ProfileTracker mprofileTracker = null;
+    User user;
 
     FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
             Profile profile = Profile.getCurrentProfile();
+            GraphRequest request = GraphRequest.newMeRequest(
+                    loginResult.getAccessToken(),
+                    new GraphRequest.GraphJSONObjectCallback() {
+                        @Override
+                        public void onCompleted(
+                                JSONObject object,
+                                GraphResponse response) {
+
+                            Log.e("response: ", response + "");
+                            try {
+                                user = new User();
+                                user.setFacebookID(object.getString("id").toString());
+                                user.setEmail(object.getString("email").toString());
+                                user.setName(object.getString("name").toString());
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                            Toast.makeText(getActivity(),getString(R.string.loggedin) + " " + user.getName(),Toast.LENGTH_SHORT).show();
+                        }
+
+                    });
+
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "id,name,email,gender, birthday");
+            request.setParameters(parameters);
+            request.executeAsync();
         }
 
         @Override
@@ -197,9 +228,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
         if (isLoggedIn()) {
             //login.setVisibility(View.INVISIBLE);
+            User user = new User();
             Profile profile = Profile.getCurrentProfile();
         }
-
     }
 
     private void loginProcess(String email,String password){
