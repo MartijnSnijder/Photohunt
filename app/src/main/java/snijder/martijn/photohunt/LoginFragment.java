@@ -107,7 +107,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                                 e.printStackTrace();
                             }
                             //Toast.makeText(getActivity(), getString(R.string.loggedin) + " " + user.getName(),Toast.LENGTH_SHORT).show();
-                            randompassword = random();
+                            randompassword = randomPassword();
                             facebookLoginProcess(user.getName(), user.getEmail(), randompassword, user.getFacebookID());
                         }
 
@@ -343,7 +343,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    public static String random() {
+    public static String randomPassword() {
         char[] chars = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
