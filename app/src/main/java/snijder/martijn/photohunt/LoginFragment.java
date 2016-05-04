@@ -295,14 +295,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                     progress.setVisibility(View.GONE);
                     tv_message.setVisibility(View.GONE);
                     dialog.dismiss();
-                    Snackbar.make(getView(), R.string.succespass, Snackbar.LENGTH_LONG).show();
                     goToProfile();
 
                 } else {
                     progress.setVisibility(View.GONE);
                     tv_message.setVisibility(View.VISIBLE);
                     tv_message.setText(R.string.errorpass);
-
                 }
             }
 
@@ -346,16 +344,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     }
 
     public static String random() {
-        Random generator = new Random();
-        StringBuilder randomStringBuilder = new StringBuilder();
-        int randomLength = generator.nextInt(12);
-        char tempChar;
-        for (int i = 6; i < randomLength; i++){
-            tempChar = (char) (generator.nextInt(96) + 32);
-            randomStringBuilder.append(tempChar);
+        char[] chars = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 8; i < 18; i++) {
+            char c = chars[random.nextInt(chars.length)];
+            sb.append(c);
         }
-        return randomStringBuilder.toString();
+        String output = sb.toString();
+        return output;
     }
+
+
 
     private void facebookLoginProcess(String name, String email, String password, String facebookid) {
 
