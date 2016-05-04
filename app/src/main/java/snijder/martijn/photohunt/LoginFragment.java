@@ -238,8 +238,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     tv_message = (TextView)view.findViewById(R.id.tv_message);
     progress = (ProgressBar)view.findViewById(R.id.progress);
     builder.setView(view);
-    builder.setTitle(R.string.changepass);
-    builder.setPositiveButton(R.string.changepass, new DialogInterface.OnClickListener() {
+    builder.setTitle(R.string.addpass);
+    builder.setPositiveButton(R.string.addpass, new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
 
@@ -247,6 +247,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     });
     dialog = builder.create();
     dialog.show();
+    dialog.setCancelable(false);
     dialog.setCanceledOnTouchOutside(false);
     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
         @Override
