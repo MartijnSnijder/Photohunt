@@ -192,7 +192,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         progress = (ProgressBar)view.findViewById(R.id.progress);
 
         login = (LoginButton) view.findViewById(R.id.login_button);
-        login.setReadPermissions("public_profile", "email", "user_friends");
+        login.setReadPermissions("public_profile", "email", "user_friends", "user_birthday");
         login.setOnClickListener(this);
         login.setFragment(this);
         login.registerCallback(callbackManager, callback);

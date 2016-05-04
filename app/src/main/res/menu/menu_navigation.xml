@@ -6,12 +6,20 @@
             android:title="Home"
             android:icon="@drawable/ic_home"/>
         <item
-            android:id="@+id/settings"
-            android:title="@string/action_settings"
-            android:icon="@drawable/ic_setting"/>
-        <item
-            android:id="@+id/logout"
-            android:title="@string/logout2"
-            android:icon="@drawable/ic_exit"/>
+            android:id="@+id/friends"
+            android:title="@string/friends"
+            android:icon="@drawable/ic_person"/>
     </group>
+    <item android:title="Account">
+        <menu>
+            <item
+                android:id="@+id/settings"
+                android:title="@string/action_settings"
+                android:icon="@drawable/ic_setting"/>
+            <item
+                android:id="@+id/logout"
+                android:title="@string/logout2"
+                android:icon="@drawable/ic_exit"/>
+        </menu>
+    </item>
 </menu>

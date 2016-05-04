@@ -64,14 +64,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         tv_namedrawer.setText(pref.getString(Constants.NAME, ""));
         tv_emaildrawer = (TextView) header.findViewById(R.id.tv_emaildrawer);
         tv_emaildrawer.setText(pref.getString(Constants.EMAIL, ""));
+        tv_name = (TextView)view.findViewById(R.id.tv_name);
+        tv_email = (TextView)view.findViewById(R.id.tv_email);
         tv_name.setText(pref.getString(Constants.NAME,""));
         tv_email.setText(pref.getString(Constants.EMAIL,""));
     }
 
     private void initViews(View view){
 
-        tv_name = (TextView)view.findViewById(R.id.tv_name);
-        tv_email = (TextView)view.findViewById(R.id.tv_email);
         btn_change_password = (AppCompatButton)view.findViewById(R.id.btn_chg_password);
         btn_logout = (AppCompatButton)view.findViewById(R.id.btn_logout);
         btn_change_password.setOnClickListener(this);

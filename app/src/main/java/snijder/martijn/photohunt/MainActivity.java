@@ -78,20 +78,29 @@ public class MainActivity extends AppCompatActivity {
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.fragment_frame, profile);
                         ft.commit();
+                        break;
+                    case R.id.friends:
+                        drawerLayout.closeDrawers();
+                        profile = new ProfileFragment();
+                        ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.fragment_frame, profile);
+                        ft.commit();
+                        break;
                     case R.id.settings:
                         drawerLayout.closeDrawers();
                         profile = new ProfileFragment();
                         ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.fragment_frame, profile);
                         ft.commit();
+                        break;
                     case R.id.logout:
                         drawerLayout.closeDrawers();
-
                         Fragment login = new LoginFragment();
                         ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.fragment_frame, login);
                         ft.commit();
                         logout();
+                        break;
                 }
                 return true;
             }

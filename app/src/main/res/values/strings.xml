@@ -36,4 +36,6 @@
     <string name="loggedin">Logged in as:</string>
     <string name="fbcombi">Error adding Facebook account</string>
     <string name="addpass">Add password</string>
+    <string name="friends">Friends</string>
+    <string name="pages">Pages</string>
 </resources>

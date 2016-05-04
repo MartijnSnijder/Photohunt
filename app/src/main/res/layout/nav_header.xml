@@ -11,7 +11,7 @@
     <com.facebook.login.widget.ProfilePictureView
         android:id="@+id/picture"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:layout_width="70sp"
         android:layout_height="70sp"/>
 
@@ -23,7 +23,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:textColorHint="@color/white" />
+        android:textColorHint="@color/white"
+        android:hint="Team Photohunt" />
 
     <TextView
         android:id="@+id/tv_emaildrawer"
@@ -32,5 +33,6 @@
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/white" />
+        android:textColorHint="@color/white"
+        android:hint="no-reply@photohunt.com" />
 </LinearLayout>
