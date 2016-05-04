@@ -21,6 +21,8 @@ public class User {
 
     public String getFacebookID() {return facebookID; }
 
+    public String getPassword() {return password; }
+
     public void setName(String name) { this.name = name;}
 
     public void setEmail(String email) {

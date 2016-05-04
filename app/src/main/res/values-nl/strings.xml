@@ -32,4 +32,5 @@
     <string name="logout2">Uitloggen</string>
     <string name="or">Of</string>
     <string name="loggedin">Ingelogd als:</string>
+    <string name="fbcombi">Fout bij het toevoegen van Facebook account</string>
 </resources>

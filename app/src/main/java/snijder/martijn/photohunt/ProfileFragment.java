@@ -1,7 +1,6 @@
 package snijder.martijn.photohunt;
 
 import android.app.AlertDialog;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.content.DialogInterface;
@@ -36,12 +35,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private TextView tv_name,tv_email,tv_message, tv_namedrawer, tv_emaildrawer;
     private SharedPreferences pref;
     private AppCompatButton btn_change_password,btn_logout;
-    private EditText et_old_password,et_new_password;
+    protected EditText et_old_password,et_new_password;
     private AlertDialog dialog;
     private ProgressBar progress;
     private DrawerLayout mDrawer;
     private ProfilePictureView profile;
-    User user;
 
 
     @Override

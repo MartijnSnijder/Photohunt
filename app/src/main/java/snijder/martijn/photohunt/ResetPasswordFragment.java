@@ -95,10 +95,8 @@ public class ResetPasswordFragment extends Fragment implements View.OnClickListe
                     String password = et_password.getText().toString();
 
                     if(!code.isEmpty() && !password.isEmpty()){
-
                         finishResetPasswordProcess(email,code,password);
                     } else {
-
                         Snackbar.make(getView(), R.string.fillfields, Snackbar.LENGTH_LONG).show();
                     }
 
@@ -108,8 +106,7 @@ public class ResetPasswordFragment extends Fragment implements View.OnClickListe
         }
     }
 
-    private void initiateResetPasswordProcess(String email){
-
+    protected void initiateResetPasswordProcess(String email){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -190,19 +187,18 @@ public class ResetPasswordFragment extends Fragment implements View.OnClickListe
             public void onResponse(Call<ServerResponse> call, retrofit2.Response<ServerResponse> response) {
 
                 ServerResponse resp = response.body();
-                Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
+                // Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
 
-                if(resp.getResult().equals(Constants.SUCCESS)){
-
-                    Snackbar.make(getView(), R.string.succespass, Snackbar.LENGTH_LONG).show();
+                if(resp.getResult().equals(Constants.SUCCESS)) {
                     countDownTimer.cancel();
                     isResetInitiated = false;
                     goToLogin();
-
+                    Snackbar.make(getView(), R.string.succespass, Snackbar.LENGTH_LONG).show();
+                }
+                else if(resp.getResult().equals(Constants.NOEMAIL)) {
+                    Snackbar.make(getView(), R.string.noemail, Snackbar.LENGTH_LONG).show();
                 } else {
-
-                    Snackbar.make(getView(), R.string.errorpass, Snackbar.LENGTH_LONG).show();
-
+                    Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
                 }
                 progress.setVisibility(View.INVISIBLE);
             }

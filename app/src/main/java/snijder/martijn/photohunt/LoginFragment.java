@@ -1,5 +1,7 @@
 package snijder.martijn.photohunt;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;;
@@ -39,6 +41,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Random;
 
 import snijder.martijn.photohunt.models.ServerRequest;
 import snijder.martijn.photohunt.models.ServerResponse;
@@ -52,8 +55,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginFragment extends Fragment implements View.OnClickListener{
     private AppCompatButton btn_login;
-    private EditText et_email,et_password;
-    private TextView tv_register,tv_reset_password;
+    private EditText et_email,et_password,editold_password,editnew_password;
+    private TextView tv_register,tv_reset_password, tv_message;
     private ProgressBar progress;
     private SharedPreferences pref;
     private DrawerLayout mDrawer;
@@ -62,12 +65,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private CallbackManager callbackManager = null;
     private AccessTokenTracker mtracker = null;
     private ProfileTracker mprofileTracker = null;
+    private String randompassword;
+    private AlertDialog dialog;
     User user;
 
     FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
-            Profile userprofile = Profile.getCurrentProfile();
+            final Profile userprofile = Profile.getCurrentProfile();
             GraphRequest request = GraphRequest.newMeRequest(
                     loginResult.getAccessToken(),
                     new GraphRequest.GraphJSONObjectCallback() {
@@ -101,8 +106,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
-                            Toast.makeText(getActivity(), getString(R.string.loggedin) + " " + user.getName(),Toast.LENGTH_SHORT).show();
-                            goToProfile();
+                            //Toast.makeText(getActivity(), getString(R.string.loggedin) + " " + user.getName(),Toast.LENGTH_SHORT).show();
+                            randompassword = random();
+                            facebookLoginProcess(user.getName(), user.getEmail(), randompassword, user.getFacebookID());
                         }
 
                     });
@@ -221,6 +227,95 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    private void showDialog(){
+
+    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    LayoutInflater inflater = getActivity().getLayoutInflater();
+    View view = inflater.inflate(R.layout.dialog_change_password, null);
+    editold_password = (EditText)view.findViewById(R.id.et_old_password);
+    editnew_password = (EditText)view.findViewById(R.id.et_new_password);
+    editold_password.setText(randompassword);
+    tv_message = (TextView)view.findViewById(R.id.tv_message);
+    progress = (ProgressBar)view.findViewById(R.id.progress);
+    builder.setView(view);
+    builder.setTitle(R.string.changepass);
+    builder.setPositiveButton(R.string.changepass, new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+
+        }
+    });
+    dialog = builder.create();
+    dialog.show();
+    dialog.setCanceledOnTouchOutside(false);
+    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String old_password = editold_password.getText().toString();
+            String new_password = editnew_password.getText().toString();
+            if(!old_password.isEmpty() && !new_password.isEmpty()){
+
+                progress.setVisibility(View.VISIBLE);
+                changePasswordProcess(pref.getString(Constants.EMAIL,""),old_password,new_password);
+
+            }else {
+
+                tv_message.setVisibility(View.VISIBLE);
+                tv_message.setText(R.string.fillfields);
+            }
+        }
+    });
+}
+
+    private void changePasswordProcess(String email,String old_password,String new_password){
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RequestInterface requestInterface = retrofit.create(RequestInterface.class);
+
+        User user = new User();
+        user.setEmail(email);
+        user.setOld_password(old_password);
+        user.setNew_password(new_password);
+        ServerRequest request = new ServerRequest();
+        request.setOperation(Constants.CHANGE_PASSWORD_OPERATION);
+        request.setUser(user);
+        Call<ServerResponse> response = requestInterface.operation(request);
+
+        response.enqueue(new Callback<ServerResponse>() {
+            @Override
+            public void onResponse(Call<ServerResponse> call, retrofit2.Response<ServerResponse> response) {
+
+                ServerResponse resp = response.body();
+                if (resp.getResult().equals(Constants.SUCCESS)) {
+                    progress.setVisibility(View.GONE);
+                    tv_message.setVisibility(View.GONE);
+                    dialog.dismiss();
+                    Snackbar.make(getView(), R.string.succespass, Snackbar.LENGTH_LONG).show();
+                    goToProfile();
+
+                } else {
+                    progress.setVisibility(View.GONE);
+                    tv_message.setVisibility(View.VISIBLE);
+                    tv_message.setText(R.string.errorpass);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServerResponse> call, Throwable t) {
+
+                Log.d(Constants.TAG, "failed");
+                progress.setVisibility(View.GONE);
+                tv_message.setVisibility(View.VISIBLE);
+                tv_message.setText(R.string.errorpass);
+            }
+        });
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -245,10 +340,70 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         super.onResume();
 
         if (isLoggedIn()) {
-            //login.setVisibility(View.INVISIBLE);
-            User user = new User();
-            Profile profile = Profile.getCurrentProfile();
+
         }
+    }
+
+    public static String random() {
+        Random generator = new Random();
+        StringBuilder randomStringBuilder = new StringBuilder();
+        int randomLength = generator.nextInt(12);
+        char tempChar;
+        for (int i = 6; i < randomLength; i++){
+            tempChar = (char) (generator.nextInt(96) + 32);
+            randomStringBuilder.append(tempChar);
+        }
+        return randomStringBuilder.toString();
+    }
+
+    private void facebookLoginProcess(String name, String email, String password, String facebookid) {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RequestInterface requestInterface = retrofit.create(RequestInterface.class);
+        final User user2 = new User();
+        user2.setName(name);
+        user2.setEmail(email);
+        user2.setPassword(password);
+        user2.setFacebookID(facebookid);
+        ServerRequest request = new ServerRequest();
+        request.setOperation(Constants.FACEBOOK_LOGIN);
+        request.setUser(user2);
+        Call<ServerResponse> response = requestInterface.operation(request);
+
+        response.enqueue(new Callback<ServerResponse>() {
+            @Override
+            public void onResponse(Call<ServerResponse> call, retrofit2.Response<ServerResponse> response) {
+                ServerResponse resp = response.body();
+
+                if (resp.getResult().equals(Constants.FBSUCCESS)) {
+                    // Snackbar.make(getView(), "Facebook ID toegevoegd", Snackbar.LENGTH_LONG).show();
+                    goToProfile();
+                }
+
+                else if (resp.getResult().equals(Constants.FBFAIL)){
+                    Snackbar.make(getView(), R.string.fbcombi, Snackbar.LENGTH_LONG).show();
+                }
+
+                else if (resp.getResult().equals(Constants.NOEXIST)){
+                    showDialog();
+                }
+
+                else {
+                    Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServerResponse> call, Throwable t) {
+
+                Log.d(Constants.TAG, "Error");
+                Snackbar.make(getView(), t.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void loginProcess(String email,String password){

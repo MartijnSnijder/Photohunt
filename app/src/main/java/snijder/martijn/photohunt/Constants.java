@@ -7,6 +7,7 @@ public class Constants {
     public static final String REGISTER_OPERATION = "register";
     public static final String LOGIN_OPERATION = "login";
     public static final String CHANGE_PASSWORD_OPERATION = "chgPass";
+    public static final String FACEBOOK_LOGIN = "fblogin";
 
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
@@ -14,6 +15,9 @@ public class Constants {
     public static final String USEREXIST = "userexist";
     public static final String REGFAIL = "regfail";
     public static final String NOEMAIL = "noemail";
+    public static final String FBSUCCESS = "fbsuccess";
+    public static final String FBFAIL = "fbfail";
+    public static final String NOEXIST = "noexist";
 
     public static final String NAME = "name";
     public static final String EMAIL = "email";

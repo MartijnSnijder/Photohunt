@@ -87,7 +87,7 @@ public class RegisterFragment extends Fragment  implements View.OnClickListener{
 
     }
 
-    private void registerProcess(String name, String email,String password){
+    protected void registerProcess(String name, String email,String password){
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)

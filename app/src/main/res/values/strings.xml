@@ -34,4 +34,5 @@
     <string name="facebook_app_id" translatable="false">496981760499570</string>
     <string name="or">Or</string>
     <string name="loggedin">Logged in as:</string>
+    <string name="fbcombi">Error adding Facebook account</string>
 </resources>
