@@ -39,25 +39,22 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private AlertDialog dialog;
     private ProgressBar progress;
     private DrawerLayout mDrawer;
-    private ProfilePictureView profile;
-
+    private ProfilePictureView profile, profiledrawer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
-        NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.navigation_view);
-        View header = navigationView.getHeaderView(0);
-        profile = (ProfilePictureView)header.findViewById(R.id.picture);
         mDrawer = (DrawerLayout) this.getActivity().findViewById(R.id.drawer);
         mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         View view = inflater.inflate(R.layout.fragment_profile,container,false);
+        pref = getActivity().getPreferences(0);
+        profile = (ProfilePictureView) view.findViewById(R.id.profilepicture);
+        profile.setProfileId(pref.getString(Constants.FACEBOOK_ID, ""));
         initViews(view);
         return view;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        pref = getActivity().getPreferences(0);
+    private void initViews(View view){
         NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.navigation_view);
         View header = navigationView.getHeaderView(0);
         tv_namedrawer = (TextView) header.findViewById(R.id.tv_namedrawer);
@@ -66,21 +63,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         tv_emaildrawer.setText(pref.getString(Constants.EMAIL, ""));
         tv_name = (TextView)view.findViewById(R.id.tv_name);
         tv_email = (TextView)view.findViewById(R.id.tv_email);
-        tv_name.setText(pref.getString(Constants.NAME,""));
-        tv_email.setText(pref.getString(Constants.EMAIL,""));
-    }
-
-    private void initViews(View view){
+        tv_name.setText(pref.getString(Constants.NAME, ""));
+        tv_email.setText(pref.getString(Constants.EMAIL, ""));
 
         btn_change_password = (AppCompatButton)view.findViewById(R.id.btn_chg_password);
         btn_logout = (AppCompatButton)view.findViewById(R.id.btn_logout);
         btn_change_password.setOnClickListener(this);
         btn_logout.setOnClickListener(this);
-
     }
 
     private void showDialog(){
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_change_password, null);
@@ -105,22 +97,22 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         dialog = builder.create();
         dialog.show();
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String old_password = et_old_password.getText().toString();
-                    String new_password = et_new_password.getText().toString();
-                    if(!old_password.isEmpty() && !new_password.isEmpty()){
+            @Override
+            public void onClick(View v) {
+                String old_password = et_old_password.getText().toString();
+                String new_password = et_new_password.getText().toString();
+                if (!old_password.isEmpty() && !new_password.isEmpty()) {
 
-                        progress.setVisibility(View.VISIBLE);
-                        changePasswordProcess(pref.getString(Constants.EMAIL,""),old_password,new_password);
+                    progress.setVisibility(View.VISIBLE);
+                    changePasswordProcess(pref.getString(Constants.EMAIL, ""), old_password, new_password);
 
-                    }else {
+                } else {
 
-                        tv_message.setVisibility(View.VISIBLE);
-                        tv_message.setText(R.string.fillfields);
-                    }
+                    tv_message.setVisibility(View.VISIBLE);
+                    tv_message.setText(R.string.fillfields);
                 }
-            });
+            }
+        });
     }
 
     @Override
@@ -131,31 +123,49 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 showDialog();
                 break;
             case R.id.btn_logout:
-                logout();
+                logoutDialog();
                 break;
         }
     }
 
-    private void logout() {
+    protected void logoutDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(R.string.logquest)
+                .setCancelable(true)
+                .setPositiveButton(R.string.log, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        logout();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        builder.create().show();
+    }
+
+    protected void logout() {
         SharedPreferences.Editor editor = pref.edit();
         editor.putBoolean(Constants.IS_LOGGED_IN, false);
         editor.putString(Constants.EMAIL, "");
-        editor.putString(Constants.NAME,"");
-        editor.putString(Constants.UNIQUE_ID,"");
+        editor.putString(Constants.NAME, "");
+        editor.putString(Constants.UNIQUE_ID, "");
         editor.putString(Constants.FACEBOOK_ID, "");
         editor.apply();
+        NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.navigation_view);
+        View header = navigationView.getHeaderView(0);
+        profiledrawer = (ProfilePictureView)header.findViewById(R.id.picture);
         profile.setProfileId("0");
+        profiledrawer.setProfileId("0");
         tv_namedrawer.setText("");
         tv_emaildrawer.setText("");
+        tv_email.setText("");
+        tv_name.setText("");
         LoginManager.getInstance().logOut();
-        goToLogin();
-    }
-
-    private void goToLogin(){
-
         Fragment login = new LoginFragment();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_frame,login);
+        ft.replace(R.id.fragment_frame, login);
         ft.commit();
     }
 
@@ -182,13 +192,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             public void onResponse(Call<ServerResponse> call, retrofit2.Response<ServerResponse> response) {
 
                 ServerResponse resp = response.body();
-                if(resp.getResult().equals(Constants.SUCCESS)){
+                if (resp.getResult().equals(Constants.SUCCESS)) {
                     progress.setVisibility(View.GONE);
                     tv_message.setVisibility(View.GONE);
                     dialog.dismiss();
                     Snackbar.make(getView(), R.string.succespass, Snackbar.LENGTH_LONG).show();
 
-                }else {
+                } else {
                     progress.setVisibility(View.GONE);
                     tv_message.setVisibility(View.VISIBLE);
                     tv_message.setText(R.string.errorpass);
@@ -199,7 +209,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onFailure(Call<ServerResponse> call, Throwable t) {
 
-                Log.d(Constants.TAG,"failed");
+                Log.d(Constants.TAG, "failed");
                 progress.setVisibility(View.GONE);
                 tv_message.setVisibility(View.VISIBLE);
                 tv_message.setText(R.string.errorpass);

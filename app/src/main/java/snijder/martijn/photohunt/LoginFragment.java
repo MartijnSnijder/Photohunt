@@ -29,7 +29,9 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
+import com.facebook.GraphRequestAsyncTask;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
@@ -37,6 +39,8 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.widget.ProfilePictureView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -103,7 +107,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                                 TextView tv_emaildrawer = (TextView) header.findViewById(R.id.tv_emaildrawer);
                                 tv_emaildrawer.setText(pref.getString(Constants.EMAIL, ""));
 
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             //Toast.makeText(getActivity(), getString(R.string.loggedin) + " " + user.getName(),Toast.LENGTH_SHORT).show();
@@ -192,7 +196,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         progress = (ProgressBar)view.findViewById(R.id.progress);
 
         login = (LoginButton) view.findViewById(R.id.login_button);
-        login.setReadPermissions("public_profile", "email", "user_friends", "user_birthday");
+        login.setReadPermissions("public_profile", "email", "user_friends");
         login.setOnClickListener(this);
         login.setFragment(this);
         login.registerCallback(callbackManager, callback);
@@ -383,7 +387,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                 ServerResponse resp = response.body();
 
                 if (resp.getResult().equals(Constants.FBSUCCESS)) {
-                    // Snackbar.make(getView(), "Facebook ID toegevoegd", Snackbar.LENGTH_LONG).show();
+                    //Snackbar.make(getView(), "Facebook ID toegevoegd", Snackbar.LENGTH_LONG).show();
                     goToProfile();
                 }
 

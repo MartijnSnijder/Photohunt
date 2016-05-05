@@ -1,6 +1,8 @@
 package snijder.martijn.photohunt;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
@@ -18,8 +20,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.friends:
                         drawerLayout.closeDrawers();
-                        profile = new ProfileFragment();
+                        FriendsFragment friends = new FriendsFragment();
                         ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.fragment_frame, profile);
+                        ft.replace(R.id.fragment_frame, friends);
                         ft.commit();
                         break;
                     case R.id.settings:
@@ -94,12 +99,12 @@ public class MainActivity extends AppCompatActivity {
                         ft.commit();
                         break;
                     case R.id.logout:
-                        drawerLayout.closeDrawers();
-                        Fragment login = new LoginFragment();
-                        ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.fragment_frame, login);
-                        ft.commit();
-                        logout();
+                        //drawerLayout.closeDrawers();
+                        //Fragment login = new LoginFragment();
+                        //ft = getSupportFragmentManager().beginTransaction();
+                        //ft.replace(R.id.fragment_frame, login);
+                        //ft.commit();
+                        logoutDialog();
                         break;
                 }
                 return true;
@@ -215,6 +220,23 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
+    protected void logoutDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage(R.string.logquest)
+                .setCancelable(true)
+                .setPositiveButton(R.string.log, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        logout();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        builder.create().show();
+    }
+
     protected void logout() {
         SharedPreferences.Editor editor = pref.edit();
         editor.putBoolean(Constants.IS_LOGGED_IN, false);
@@ -223,9 +245,12 @@ public class MainActivity extends AppCompatActivity {
         editor.putString(Constants.UNIQUE_ID, "");
         editor.putString(Constants.FACEBOOK_ID, "");
         editor.apply();
-        profile.setProfileId("0");
         name.setText("");
         email.setText("");
         LoginManager.getInstance().logOut();
+        Fragment login = new LoginFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_frame, login);
+        ft.commit();
     }
 }

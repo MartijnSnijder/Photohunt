@@ -41,4 +41,7 @@
     <string name="add">Add</string>
     <string name="setuppass">Set up password</string>
     <string name="setup">Set</string>
+    <string name="logquest">Log out?</string>
+    <string name="log">Log out</string>
+    <string name="profile">Profile</string>
 </resources>

@@ -39,4 +39,7 @@
     <string name="add">Voeg toe</string>
     <string name="setuppass">Wachtwoord instellen</string>
     <string name="setup">Instellen</string>
+    <string name="logquest">Uitloggen?</string>
+    <string name="log">Log uit</string>
+    <string name="profile">Profiel</string>
 </resources>

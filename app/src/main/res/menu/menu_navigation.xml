@@ -14,7 +14,7 @@
         <menu>
             <item
                 android:id="@+id/settings"
-                android:title="@string/action_settings"
+                android:title="@string/profile"
                 android:icon="@drawable/ic_setting"/>
             <item
                 android:id="@+id/logout"
