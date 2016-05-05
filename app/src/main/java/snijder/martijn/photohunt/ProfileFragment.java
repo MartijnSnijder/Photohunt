@@ -44,6 +44,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.profile);
         mDrawer = (DrawerLayout) this.getActivity().findViewById(R.id.drawer);
         mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         View view = inflater.inflate(R.layout.fragment_profile,container,false);

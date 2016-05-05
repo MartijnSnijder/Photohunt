@@ -47,6 +47,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
+import okhttp3.internal.Util;
 import snijder.martijn.photohunt.models.ServerRequest;
 import snijder.martijn.photohunt.models.ServerResponse;
 import snijder.martijn.photohunt.models.User;
@@ -69,14 +70,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private CallbackManager callbackManager = null;
     private AccessTokenTracker mtracker = null;
     private ProfileTracker mprofileTracker = null;
-    private String randompassword;
+    private String randompassword, friends;
     private AlertDialog dialog;
     User user;
 
     FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
-            final Profile userprofile = Profile.getCurrentProfile();
             GraphRequest request = GraphRequest.newMeRequest(
                     loginResult.getAccessToken(),
                     new GraphRequest.GraphJSONObjectCallback() {
@@ -88,9 +88,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                             Log.e("response: ", response + "");
                             try {
                                 user = new User();
-                                user.setFacebookID(object.getString("id").toString());
-                                user.setEmail(object.getString("email").toString());
-                                user.setName(object.getString("name").toString());
+                                user.setFacebookID(object.getString("id"));
+                                user.setEmail(object.getString("email"));
+                                user.setName(object.getString("name"));
                                 profile.setProfileId(user.getFacebookID());
                                 SharedPreferences.Editor editor = pref.edit();
                                 editor.putBoolean(Constants.IS_LOGGED_IN, true);
@@ -118,7 +118,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                     });
 
             Bundle parameters = new Bundle();
-            parameters.putString("fields", "id,name,email,gender");
+            parameters.putString("fields", "id,name,email,gender,friends");
             request.setParameters(parameters);
             request.executeAsync();
         }
@@ -133,7 +133,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
         }
     };
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
