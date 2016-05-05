@@ -32,7 +32,7 @@
         <EditText
             android:hint="@string/naam"
             android:id="@+id/et_name"
-            android:drawableRight="@drawable/ic_person"
+            android:drawableRight="@drawable/ic_personpink"
             android:inputType="textPersonName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

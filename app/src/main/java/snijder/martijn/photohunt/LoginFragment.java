@@ -233,13 +233,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     LayoutInflater inflater = getActivity().getLayoutInflater();
     View view = inflater.inflate(R.layout.dialog_change_password, null);
     editold_password = (EditText)view.findViewById(R.id.et_old_password);
-    editnew_password = (EditText)view.findViewById(R.id.et_new_password);
     editold_password.setText(randompassword);
+    editold_password.setVisibility(View.GONE);
+    editnew_password = (EditText)view.findViewById(R.id.et_new_password);
+    editnew_password.setHint(R.string.password);
     tv_message = (TextView)view.findViewById(R.id.tv_message);
     progress = (ProgressBar)view.findViewById(R.id.progress);
     builder.setView(view);
-    builder.setTitle(R.string.addpass);
-    builder.setPositiveButton(R.string.addpass, new DialogInterface.OnClickListener() {
+    builder.setTitle(R.string.setuppass);
+    builder.setPositiveButton(R.string.setup, new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
 
