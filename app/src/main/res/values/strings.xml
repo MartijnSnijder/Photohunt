@@ -44,4 +44,5 @@
     <string name="logquest">Log out?</string>
     <string name="log">Log out</string>
     <string name="profile">Profile</string>
+    <string name="invite">Invite friends</string>
 </resources>

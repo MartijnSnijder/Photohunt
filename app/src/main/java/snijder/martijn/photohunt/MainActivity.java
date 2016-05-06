@@ -2,6 +2,7 @@ package snijder.martijn.photohunt;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -24,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,8 @@ import android.widget.Toast;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.ProfilePictureView;
+
+import java.util.ArrayList;
 
 import de.halfbit.tinybus.Subscribe;
 import de.halfbit.tinybus.TinyBus;
@@ -47,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ProfilePictureView profile;
     private TextView name, email;
-    User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,11 +103,6 @@ public class MainActivity extends AppCompatActivity {
                         ft.commit();
                         break;
                     case R.id.logout:
-                        //drawerLayout.closeDrawers();
-                        //Fragment login = new LoginFragment();
-                        //ft = getSupportFragmentManager().beginTransaction();
-                        //ft.replace(R.id.fragment_frame, login);
-                        //ft.commit();
                         logoutDialog();
                         break;
                 }

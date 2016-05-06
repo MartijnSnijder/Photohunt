@@ -86,6 +86,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                                 GraphResponse response) {
 
                             Log.e("response: ", response + "");
+                            Intent intent = new Intent(getActivity(),FriendsFragment.class);
                             try {
                                 user = new User();
                                 user.setFacebookID(object.getString("id"));
@@ -106,6 +107,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                                 tv_namedrawer.setText(pref.getString(Constants.NAME, ""));
                                 TextView tv_emaildrawer = (TextView) header.findViewById(R.id.tv_emaildrawer);
                                 tv_emaildrawer.setText(pref.getString(Constants.EMAIL, ""));
+
+                                JSONObject userDetails = object.getJSONObject("friends");
+                                String name = userDetails.getString("data");
+                                intent.putExtra("jsondata", name);
+                                startActivity(intent);
 
                             } catch (Exception e) {
                                 e.printStackTrace();

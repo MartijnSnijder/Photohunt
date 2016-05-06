@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:paddingLeft="40dp"
     android:paddingRight="40dp"
     android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
 
     <com.facebook.login.widget.ProfilePictureView
         android:id="@+id/profilepicture"
@@ -14,7 +14,7 @@
         android:layout_marginTop="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"/>
+        android:adjustViewBounds="true" />
 
     <TextView
         android:id="@+id/tv_name"
