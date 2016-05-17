@@ -9,27 +9,15 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="32dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="snijder.martijn.photohunt.FriendsFragment"
-    tools:showIn="@layout/fragment_friends"
+    tools:context="snijder.martijn.photohunt.HuntsFragment"
+    tools:showIn="@layout/fragment_hunts"
     android:weightSum="1">
-
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/listView"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/btn_invite"/>
-
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_invite"
-        android:text="@string/invite"
-        android:background="@color/btn_login_bg"
-        android:textColor="@android:color/white"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="16dp"/>
+        android:id="@+id/huntsList"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"/>
+
 </RelativeLayout>

@@ -98,9 +98,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.hunts:
                         drawerLayout.closeDrawers();
-                        CameraFragment camera = new CameraFragment();
+                        HuntsFragment hunt = new HuntsFragment();
                         ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.fragment_frame, camera);
+                        ft.replace(R.id.fragment_frame, hunt);
                         ft.commit();
                         break;
                     case R.id.settings:

@@ -1,8 +1,9 @@
 package snijder.martijn.photohunt;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v4.app.FragmentManager;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;;
 import android.content.Intent;
@@ -20,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -29,25 +29,17 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
-import com.facebook.GraphRequestAsyncTask;
 import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.widget.ProfilePictureView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Random;
 
-import okhttp3.internal.Util;
 import snijder.martijn.photohunt.models.ServerRequest;
 import snijder.martijn.photohunt.models.ServerResponse;
 import snijder.martijn.photohunt.models.User;
@@ -56,7 +48,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
 
 public class LoginFragment extends Fragment implements View.OnClickListener{
     private AppCompatButton btn_login;
@@ -70,7 +61,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private CallbackManager callbackManager = null;
     private AccessTokenTracker mtracker = null;
     private ProfileTracker mprofileTracker = null;
-    private String randompassword, friends;
+    private String randompassword;
     private AlertDialog dialog;
     User user;
 
@@ -490,5 +481,17 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_frame,profile);
         ft.commit();
+    }
+
+    public static void putPref(String key, String value, Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    public static String getPref(String key, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(key, null);
     }
 }

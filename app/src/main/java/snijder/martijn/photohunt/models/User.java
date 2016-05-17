@@ -11,7 +11,11 @@ public class User {
     private String old_password;
     private String new_password;
     private String code;
+    private String hunt;
 
+    public String getHunt() {return hunt;}
+
+    public void setHunt(String hunt) {this.hunt = hunt;}
 
     public String getName() {return name;}
 
@@ -46,5 +50,7 @@ public class User {
     }
 
     public void setFacebookID(String facebookID) { this.facebookID = facebookID; }
+
+
 
 }
