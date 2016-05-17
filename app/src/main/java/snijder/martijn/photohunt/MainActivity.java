@@ -62,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
         initNavigationDrawer();
         pref = getPreferences(0);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-        checkPermission();
+        checkStoragePermission();
+        checkCameraPermission();
         initFragment();
         setDrawerItems();
 
@@ -93,6 +94,13 @@ public class MainActivity extends AppCompatActivity {
                         FriendsFragment friends = new FriendsFragment();
                         ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.fragment_frame, friends);
+                        ft.commit();
+                        break;
+                    case R.id.hunts:
+                        drawerLayout.closeDrawers();
+                        CameraFragment camera = new CameraFragment();
+                        ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.fragment_frame, camera);
                         ft.commit();
                         break;
                     case R.id.settings:
@@ -126,17 +134,18 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
     }
 
-    private boolean checkPermission(){
-        int result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (result == PackageManager.PERMISSION_GRANTED){
+    private boolean checkStoragePermission(){
+        int storageresult = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (storageresult == PackageManager.PERMISSION_GRANTED){
             return true;
         } else {
-            requestPermission();
+            requestStoragePermission();
             return false;
         }
     }
 
-    private void requestPermission(){
+
+    private void requestStoragePermission(){
 
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)){
 
@@ -145,6 +154,29 @@ public class MainActivity extends AppCompatActivity {
         } else {
 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+        }
+    }
+
+
+    private boolean checkCameraPermission(){
+        int cameraresult = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        if (cameraresult == PackageManager.PERMISSION_GRANTED){
+            return true;
+        } else {
+            requestCameraPermission();
+            return false;
+        }
+    }
+
+    private void requestCameraPermission(){
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.CAMERA)){
+
+            Toast.makeText(this,R.string.camerapermission, Toast.LENGTH_LONG).show();
+
+        } else {
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CODE);
         }
     }
 

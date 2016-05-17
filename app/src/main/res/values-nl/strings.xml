@@ -43,4 +43,5 @@
     <string name="log">Log uit</string>
     <string name="profile">Profiel</string>
     <string name="invite">Nodig vrienden uit</string>
+    <string name="camerapermission">Deze app heeft toegang tot de camera nodig om correct te kunnen werken. Geef deze toegang alstublieft in de Apps instellingen.</string>
 </resources>

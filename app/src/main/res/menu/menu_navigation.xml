@@ -9,6 +9,10 @@
             android:id="@+id/friends"
             android:title="@string/friends"
             android:icon="@drawable/ic_person"/>
+        <item
+            android:id="@+id/hunts"
+            android:title="Hunts"
+            android:icon="@android:drawable/ic_menu_camera"/>
     </group>
     <item android:title="Account">
         <menu>
