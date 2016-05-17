@@ -38,8 +38,6 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
         View view = inflater.inflate(R.layout.camera_overlay, container, false);
         mTextureView = (TextureView) view.findViewById(R.id.texture_view);
         mTextureView.setRotation(90.0f);
-        Camera.Size previewSize = mCamera.getParameters().getPreviewSize();
-        mTextureView.setLayoutParams(new FrameLayout.LayoutParams(previewSize.width, previewSize.height, Gravity.CENTER));
         mTextureView.setSurfaceTextureListener(this);
         return view;
     }
